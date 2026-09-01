@@ -53,7 +53,7 @@ export default function CategoryNav() {
           <button
             type="button"
             onClick={() => setIsMobileOpen((open) => !open)}
-            className="rounded-full bg-slate-950 px-3 py-2 text-xs font-semibold text-white"
+            className="rounded-full bg-slate-950 px-3 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
             aria-expanded={isMobileOpen}
             aria-controls="category-nav-list"
           >
@@ -63,13 +63,9 @@ export default function CategoryNav() {
 
         <div
           id="category-nav-list"
-          className={
-            isMobileOpen
-              ? "mt-3 flex"
-              : "hidden md:flex"
-          }
+          className={isMobileOpen ? "block" : "hidden md:block"}
         >
-          <div className="flex gap-2 overflow-x-auto md:overflow-visible">
+          <div className="mt-3 flex gap-2 overflow-x-auto pb-1 md:mt-0 md:overflow-visible">
             {categories.map(({ label, href, id }) => {
               const isActive = activeCategory === id;
 
