@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const categories = [
   { label: "All", href: "#top", id: "top" },
-  { label: "black.", href: "#black", id: "black" },
+  { label: "black-based", href: "#black", id: "black" },
   { label: "milk-based.", href: "#milk-based", id: "milk-based" },
   { label: "tea-based.", href: "#tea-based", id: "tea-based" },
   { label: "classics.", href: "#classics", id: "classics" },
@@ -14,7 +14,6 @@ const categories = [
 
 export default function CategoryNav() {
   const [activeCategory, setActiveCategory] = useState("top");
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
     const sections = categories
@@ -44,28 +43,10 @@ export default function CategoryNav() {
   }, []);
 
   return (
-    <nav aria-label="Menu categories" className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur-sm">
-      <div className="mx-auto max-w-xl px-4 py-3">
-        <div className="flex items-center justify-between gap-2 md:hidden">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
-            Categories
-          </p>
-          <button
-            type="button"
-            onClick={() => setIsMobileOpen((open) => !open)}
-            className="rounded-full bg-slate-950 px-3 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-slate-800"
-            aria-expanded={isMobileOpen}
-            aria-controls="category-nav-list"
-          >
-            {isMobileOpen ? "Close" : "Menu"}
-          </button>
-        </div>
-
-        <div
-          id="category-nav-list"
-          className={isMobileOpen ? "block" : "hidden md:block"}
-        >
-          <div className="mt-3 flex gap-2 overflow-x-auto pb-1 md:mt-0 md:overflow-visible">
+    <nav aria-label="Menu categories" className="sticky top-0 z-20 border-b border-[#d8b79d] bg-[#f5efe6]/95 backdrop-blur-sm">
+      <div className="mx-auto max-w-md px-3 py-3 sm:max-w-xl sm:px-4">
+        <div className="overflow-x-auto pb-1">
+          <div className="flex min-w-max gap-2">
             {categories.map(({ label, href, id }) => {
               const isActive = activeCategory === id;
 
@@ -73,14 +54,11 @@ export default function CategoryNav() {
                 <a
                   key={label}
                   href={href}
-                  onClick={() => {
-                    setActiveCategory(id);
-                    setIsMobileOpen(false);
-                  }}
+                  onClick={() => setActiveCategory(id)}
                   className={
                     isActive
-                      ? "whitespace-nowrap rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 ease-out will-change-transform hover:scale-[1.02]"
-                      : "whitespace-nowrap rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-slate-200 hover:shadow-sm"
+                      ? "whitespace-nowrap rounded-full bg-[#3a1f1d] px-3 py-2 text-xs font-semibold text-[#f5efe6] shadow-sm transition-all duration-300 ease-out will-change-transform hover:scale-[1.02] sm:px-4 sm:text-sm"
+                      : "whitespace-nowrap rounded-full bg-[#f3e3d6] px-3 py-2 text-xs font-semibold text-[#3a1f1d] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#ebd8c5] hover:shadow-sm sm:px-4 sm:text-sm"
                   }
                 >
                   {label}

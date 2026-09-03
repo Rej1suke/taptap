@@ -1,30 +1,33 @@
 export type MenuItemType = {
   name: string;
-  price: number;
+  price?: number;
+  hotPrice?: number;
+  icedPrice?: number;
   category: string;
   description: string;
 };
 
 export const menuItems: MenuItemType[] = [
-    // BLACK.
+    // BLACK-BASED.
   {
     name: "Sunburn",
     price: 185,
-    category: "BLACK.",
+    category: "BLACK-BASED.",
     description:
       "Orange + Espresso",
   },
   {
     name: "Yuzu",
     price: 185,
-    category: "BLACK.",
+    category: "BLACK-BASED.",
     description:
       "Lemon + Espresso",
   },
   {
     name: "Americano",
-    price: 160,
-    category: "BLACK.",
+    hotPrice: 160,
+    icedPrice: 155,
+    category: "BLACK-BASED.",
     description:
       "Espresso + Water",
   },
@@ -38,21 +41,24 @@ export const menuItems: MenuItemType[] = [
   },
   {
     name: "Sweet Kanella",
-    price:  175,
+    hotPrice: 175,
+    icedPrice: 170,
     category: "MILK-BASED.",
     description:
       "Cinnamon Latte",
   },
   {
     name: "Black Sesame",
-    price:  185,
+    hotPrice: 185,
+    icedPrice: 180,
     category: "MILK-BASED.",
     description:
       "",
   },
   {
     name: "Spanish Oat",
-    price: 185,
+    hotPrice: 185,
+    icedPrice: 180,
     category: "MILK-BASED.",
     description:
       "",
@@ -60,7 +66,8 @@ export const menuItems: MenuItemType[] = [
   // TEA-BASED.
   {
     name: "Gui Hui Latte",
-    price: 185,
+    hotPrice: 185,
+    icedPrice: 175,
     category: "TEA-BASED.",
     description:
       "Osmanthus Tea, Milk & Espresso",
@@ -82,7 +89,8 @@ export const menuItems: MenuItemType[] = [
   },
   {
     name: "Latte",
-    price: 175,
+    hotPrice: 175,
+    icedPrice: 160,
     category: "CLASSICS.",
     description:
       "",
@@ -97,7 +105,8 @@ export const menuItems: MenuItemType[] = [
   //MATCHA.
   {
     name: "Matcha Latte",
-    price: 165,
+    hotPrice: 175,
+    icedPrice: 165,
     category: "MATCHA.",
     description:
       "",
