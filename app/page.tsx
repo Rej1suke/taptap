@@ -5,7 +5,6 @@ import MenuItem from "@/components/MenuItem";
 import { getPublicMenu } from "@/lib/menu/repository";
 import type { MenuResponse } from "@/lib/menu/types";
 import brandLogo from "@/public/nuwave.png";
-import coffeeMascot from "@/public/menu/coffee-mascot.png";
 
 export const dynamic = "force-dynamic";
 
@@ -72,9 +71,6 @@ export default function Home(): ReactElement {
           <div className="menu-title-block">
             <h1>THE MENU</h1>
             <p>Don’t just drink coffee, experience it.</p>
-          </div>
-          <div className="menu-mascot" aria-hidden="true">
-            <Image src={coffeeMascot} alt="" sizes="(max-width: 600px) 88px, (max-width: 800px) 90px, 125px" loading="eager" />
           </div>
           <div className="menu-masthead-foot">
             <p>Corner Fajardo & Libertad Street, Iloilo City</p>
