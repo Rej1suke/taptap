@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T17:29:00Z",
+  "title": "Design System: Nuwave Specialty Coffee",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Warm paper",
+        "tonalRamp": [
+          "oklch(15% 0.0136 78.26)",
+          "oklch(27% 0.0136 78.26)",
+          "oklch(38% 0.0136 78.26)",
+          "oklch(50% 0.0136 78.26)",
+          "oklch(61% 0.0136 78.26)",
+          "oklch(73% 0.0136 78.26)",
+          "oklch(84% 0.0136 78.26)",
+          "oklch(95% 0.0136 78.26)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Cream field",
+        "tonalRamp": [
+          "oklch(15% 0.0270 69.28)",
+          "oklch(27% 0.0270 69.28)",
+          "oklch(38% 0.0270 69.28)",
+          "oklch(50% 0.0270 69.28)",
+          "oklch(61% 0.0270 69.28)",
+          "oklch(73% 0.0270 69.28)",
+          "oklch(84% 0.0270 69.28)",
+          "oklch(95% 0.0270 69.28)"
+        ]
+      },
+      "plum-ink": {
+        "role": "neutral",
+        "displayName": "Dark plum ink",
+        "tonalRamp": [
+          "oklch(15% 0.0908 328.13)",
+          "oklch(27% 0.0908 328.13)",
+          "oklch(38% 0.0908 328.13)",
+          "oklch(50% 0.0908 328.13)",
+          "oklch(61% 0.0908 328.13)",
+          "oklch(73% 0.0908 328.13)",
+          "oklch(84% 0.0908 328.13)",
+          "oklch(95% 0.0908 328.13)"
+        ]
+      },
+      "plum-accent": {
+        "role": "primary",
+        "displayName": "Plum emphasis",
+        "tonalRamp": [
+          "oklch(15% 0.0908 328.13)",
+          "oklch(27% 0.0908 328.13)",
+          "oklch(38% 0.0908 328.13)",
+          "oklch(50% 0.0908 328.13)",
+          "oklch(61% 0.0908 328.13)",
+          "oklch(73% 0.0908 328.13)",
+          "oklch(84% 0.0908 328.13)",
+          "oklch(95% 0.0908 328.13)"
+        ]
+      },
+      "muted-ink": {
+        "role": "neutral",
+        "displayName": "Supporting plum",
+        "tonalRamp": [
+          "oklch(15% 0.0611 326.55)",
+          "oklch(27% 0.0611 326.55)",
+          "oklch(38% 0.0611 326.55)",
+          "oklch(50% 0.0611 326.55)",
+          "oklch(61% 0.0611 326.55)",
+          "oklch(73% 0.0611 326.55)",
+          "oklch(84% 0.0611 326.55)",
+          "oklch(95% 0.0611 326.55)"
+        ]
+      },
+      "mauve-rule": {
+        "role": "neutral",
+        "displayName": "Mauve divider",
+        "tonalRamp": [
+          "oklch(15% 0.0325 330.76)",
+          "oklch(27% 0.0325 330.76)",
+          "oklch(38% 0.0325 330.76)",
+          "oklch(50% 0.0325 330.76)",
+          "oklch(61% 0.0325 330.76)",
+          "oklch(73% 0.0325 330.76)",
+          "oklch(84% 0.0325 330.76)",
+          "oklch(95% 0.0325 330.76)"
+        ]
+      },
+      "specialty-plum": {
+        "role": "neutral",
+        "displayName": "specialty plum",
+        "tonalRamp": [
+          "oklch(15% 0.0794 327.27)",
+          "oklch(27% 0.0794 327.27)",
+          "oklch(38% 0.0794 327.27)",
+          "oklch(50% 0.0794 327.27)",
+          "oklch(61% 0.0794 327.27)",
+          "oklch(73% 0.0794 327.27)",
+          "oklch(84% 0.0794 327.27)",
+          "oklch(95% 0.0794 327.27)"
+        ]
+      },
+      "specialty-rule": {
+        "role": "neutral",
+        "displayName": "specialty rule",
+        "tonalRamp": [
+          "oklch(15% 0.0557 331.65)",
+          "oklch(27% 0.0557 331.65)",
+          "oklch(38% 0.0557 331.65)",
+          "oklch(50% 0.0557 331.65)",
+          "oklch(61% 0.0557 331.65)",
+          "oklch(73% 0.0557 331.65)",
+          "oklch(84% 0.0557 331.65)",
+          "oklch(95% 0.0557 331.65)"
+        ]
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Navigation press, underline, and artwork feedback."
+      },
+      {
+        "name": "press",
+        "value": "160ms",
+        "purpose": "Scale links and retry actions to 0.97 during press."
+      },
+      {
+        "name": "underline",
+        "value": "150ms",
+        "purpose": "Show active and fine-pointer hover underline."
+      },
+      {
+        "name": "artwork",
+        "value": "250ms",
+        "purpose": "Cup artwork entrance only; disabled for reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "800px"
+      },
+      {
+        "name": "single-column",
+        "value": "600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Menu category navigation",
+      "kind": "nav",
+      "description": "Sticky anchor navigation with current-section underline.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#black\" aria-current=\"location\">Black</a><a href=\"#classics\">Classics</a></nav>",
+      "css": ".ds-nav{display:flex;gap:12px;background:#f5efe6;color:#2f042f;border-bottom:1px solid #c9b5c6;font:600 .74rem Geist,Arial,sans-serif}.ds-nav a{display:flex;align-items:center;min-height:58px;padding:0 6px;color:inherit;text-decoration:none;position:relative;transition:transform 160ms cubic-bezier(.23,1,.32,1)}.ds-nav a::after{content:'';position:absolute;bottom:10px;left:6px;right:6px;height:2px;background:currentColor;opacity:0;transition:opacity 150ms cubic-bezier(.23,1,.32,1)}.ds-nav a[aria-current],.ds-nav a:hover{color:#2f042f}.ds-nav a[aria-current]::after,.ds-nav a:hover::after{opacity:1}.ds-nav a:focus-visible{outline:2px solid #2f042f;outline-offset:-5px}.ds-nav a:active{transform:scale(.97)}@media(prefers-reduced-motion:reduce){.ds-nav a{transition:none}.ds-nav a:active{transform:none}}"
+    },
+    {
+      "name": "Category label",
+      "kind": "custom",
+      "refersTo": "category-label",
+      "description": "Outlined condensed category heading.",
+      "html": "<h2 class=\"ds-category\">BLACK</h2>",
+      "css": ".ds-category{display:inline-block;margin:0;border:1px solid #2f042f;border-radius:50px;padding:6px 22px 8px;color:#2f042f;font:700 1.9rem/1.05 'Barlow Condensed',sans-serif;text-align:center}"
+    },
+    {
+      "name": "Menu row",
+      "kind": "custom",
+      "description": "Flat item row with description and labeled PHP variants.",
+      "html": "<div class=\"ds-row\"><div><h3>Americano</h3></div><dl><div><dt>Iced</dt><dd>₱175</dd></div><div><dt>Hot</dt><dd>₱170</dd></div></dl></div>",
+      "css": ".ds-row{display:flex;justify-content:space-between;gap:14px;padding:15px 0 16px;border-bottom:1px solid #c9b5c6;color:#2f042f;font-family:Geist,Arial,sans-serif}.ds-row h3{margin:0;font-size:1rem;font-weight:650;line-height:1.35}.ds-row dl{display:flex;gap:14px;margin:0;text-align:right;font-variant-numeric:tabular-nums}.ds-row dt{font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.055em;color:#654765;margin-bottom:4px}.ds-row dd{margin:0;font-size:.95rem;font-weight:650;white-space:nowrap}"
+    },
+    {
+      "name": "Specialty panel",
+      "kind": "custom",
+      "refersTo": "specialty-panel",
+      "description": "Contrasting coffee region with process and roaster information.",
+      "html": "<section class=\"ds-specialty\"><h2>Specialty Coffee</h2><p>Colombia Chiroso · ₱595</p><p>Naturals · Roasted by KIS</p></section>",
+      "css": ".ds-specialty{background:#452045;color:#f5efe6;border-radius:22px;padding:28px 30px 30px;font-family:Geist,Arial,sans-serif}.ds-specialty h2{font:700 1.9rem/1.05 'Barlow Condensed',sans-serif}.ds-specialty p:last-child{font-size:.76rem;line-height:1.6;color:#f1e2d2}"
+    },
+    {
+      "name": "Retry action",
+      "kind": "button",
+      "refersTo": "menu-action",
+      "description": "Retry control for the public menu error state.",
+      "html": "<button class=\"ds-action\">Try again</button>",
+      "css": ".ds-action{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 24px;background:#2f042f;color:#f5efe6;border:0;border-radius:24px;font:inherit;transition:transform 160ms cubic-bezier(.23,1,.32,1)}.ds-action:hover{cursor:pointer}.ds-action:focus-visible{outline:2px solid #2f042f;outline-offset:5px}.ds-action:active{transform:scale(.97)}@media(prefers-reduced-motion:reduce){.ds-action{transition:none}.ds-action:active{transform:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Vintage coffee-house menu poster",
+    "overview": "Warm paper, condensed lettering, and fine rules establish the café identity. Readable item names and prices carry the interface; the original coffee-cup ink artwork supplies a small, memorable detail without delaying menu content.\n\nThe system uses a compact composition and flat rows. Color groups related information and distinguishes the specialty section while retaining the existing brand palette.",
+    "keyCharacteristics": [
+      "Condensed display lettering with readable Geist menu text.",
+      "Ruled rows and clear variant labels.",
+      "Cream paper with dark-plum emphasis and text.",
+      "Brief input feedback and reduced-motion support."
+    ],
+    "rules": [
+      {
+        "name": "The Readable Price Rule",
+        "body": "Prices inherit the section's readable foreground and use tabular figures; color never replaces a variant label.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do use clear variant names and tabular price figures.",
+      "Do keep menu rows flat and separate them with fine rules.",
+      "Do preserve keyboard focus, horizontal category navigation, and reduced-motion behavior.",
+      "Do document actual source tokens when extending this system."
+    ],
+    "donts": [
+      "Don't use the brand logo as a product photograph.",
+      "Don't delay menu text behind entrance animation.",
+      "Don't introduce cart, ordering, or public administrative navigation into the menu."
+    ]
+  }
+}

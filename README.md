@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nuwave Specialty Coffee
 
-## Getting Started
+Responsive public digital menu with a separate protected administrative API. No cart, ordering, or payments.
 
-First, run the development server:
+Use Node >=22.18 and npm. package-lock.json is the authoritative lockfile. Prisma preview runtime and CLI are pinned: CLI 8.0.0-rc.21 ships ORM toolchain 8.0.0-rc.16.
 
 ```bash
+npm ci
+# Configure .env from .env.example with the real database and Supabase project.
+npm run contract:emit
+npm run db:migrate
+npm run db:seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Read [the admin/API specification](docs/specs/admin-side.md) before migrating an existing database. The initial migration was verified against this project's empty public schema. db:migrate also enables RLS and removes browser-facing table privileges. Normal seed inserts missing CSV IDs and preserves edits, and never runs on startup.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open / for the menu. Staff register at /signup and sign in at /login. Disable Supabase email confirmation for the agreed signup flow. Approval is a manual edit of public.User.isAdmin in the Supabase database dashboard. /dashboard is a protected teammate placeholder; every administrative API verifies the current role independently.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm test
+npm run lint
+npx tsc --noEmit
+npm run build
+# With the app running:
+npm run test:api
+```
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+npm run test:auth creates and removes two isolated real Auth accounts and temporary menu records. Run it only with explicit authorization and a server-only SUPABASE_SECRET_KEY. [Verification evidence](docs/specs/backend-verification.md) includes the external Data API limitation.

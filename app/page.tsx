@@ -1,172 +1,101 @@
-import { menuItems, type MenuItemType } from "@/data/menu";
+import { Suspense, type ReactElement } from "react";
+import Image from "next/image";
+import CategoryNav from "@/components/CategoryNav";
 import MenuItem from "@/components/MenuItem";
+import { getPublicMenu } from "@/lib/menu/repository";
+import type { MenuResponse } from "@/lib/menu/types";
+import brandLogo from "@/public/nuwave.png";
+import coffeeMascot from "@/public/menu/coffee-mascot.png";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+async function MenuContents(): Promise<ReactElement> {
+  let menu: MenuResponse;
+  try {
+    menu = await getPublicMenu();
+  } catch {
+    return (
+      <section className="menu-state" aria-labelledby="menu-error-title">
+        <h2 id="menu-error-title">The menu couldn’t load.</h2>
+        <p>Please try again, or ask our barista for today’s menu.</p>
+        <form action="/" method="get"><button className="menu-action" type="submit">Try again</button></form>
+      </section>
+    );
+  }
+  if (menu.categories.length === 0) {
+    return (
+      <section className="menu-state" aria-labelledby="menu-empty-title">
+        <h2 id="menu-empty-title">We’re updating the menu.</h2>
+        <p>Ask our barista what’s available today.</p>
+      </section>
+    );
+  }
   return (
-    <main id="top" className="min-h-screen bg-[#f5efe6] text-[#2f1a18]">
-
-      {/* Restaurant Header */}
-      <header className="bg-[#f1e2d2] px-4 py-8 text-center text-[#2f1a18] sm:px-6 sm:py-10">
-        <div className="mx-auto max-w-md sm:max-w-xl">
-
-          <div className="mx-auto flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
-            <img
-              src="/nuwave.png"
-              alt="Ñuwave Coffee logo"
-              className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
-            />
-          </div>
-
-          <h1 className="mt-4 text-2xl font-black text-[#2f1a18] sm:text-3xl">
-            Ñuwave Specialty Coffee
-          </h1>
-
-          <p className="mt-2 text-sm italic text-[#5b2f2b] sm:text-base">
-            Don&apos;t just drink coffee, experience it.
-          </p>
-
-          <p className="mt-3 text-[10px] text-[#5b2f2b] sm:text-xs">
-            📍 Corner Fajardo & Libertad Street, Iloilo City
-          </p>
-
-        </div>
-      </header>
-
-      {/* Menu */}
-      <div className="bg-[#f5efe6] px-3 py-6 sm:px-4 sm:py-8">
-        <div className="mx-auto max-w-5xl">
-          <header className="mb-5 border-b border-[#c8a98d] pb-3 text-center text-[#2f1a18]">
-            <p className="text-3xl font-black tracking-tight sm:text-4xl">
-              COFFEE MENU
-            </p>
-          </header>
-
-          <section id="black" className="scroll-mt-24 mb-6 rounded-2xl border border-[#d8c2b1] bg-[#f1e6d8] p-3 sm:p-5">
-            <h2 className="mb-4 text-xl font-black text-[#2f1a18] sm:text-2xl">
-              BLACK-BASED.
-            </h2>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {menuItems
-                .filter((item: MenuItemType) => item.category === "BLACK-BASED.")
-                .map((item: MenuItemType) => (
-                  <MenuItem key={item.name} item={item} />
-                ))}
-            </div>
-          </section>
-
-          <section id="milk-based" className="scroll-mt-24 mb-6 rounded-2xl border border-[#d8c2b1] bg-[#f1e6d8] p-3 sm:p-5">
-            <h2 className="mb-4 text-xl font-black text-[#2f1a18] sm:text-2xl">
-              MILK-BASED.
-            </h2>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {menuItems
-                .filter((item: MenuItemType) => item.category === "MILK-BASED.")
-                .map((item: MenuItemType) => (
-                  <MenuItem key={item.name} item={item} />
-                ))}
-            </div>
-          </section>
-
-          <section id="tea-based" className="scroll-mt-24 mb-6 rounded-2xl border border-[#d8c2b1] bg-[#f1e6d8] p-3 sm:p-5">
-            <h2 className="mb-4 text-xl font-black text-[#2f1a18] sm:text-2xl">
-              TEA-BASED.
-            </h2>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {menuItems
-                .filter((item: MenuItemType) => item.category === "TEA-BASED.")
-                .map((item: MenuItemType) => (
-                  <MenuItem key={item.name} item={item} />
-                ))}
-            </div>
-          </section>
-
-          <section id="classics" className="scroll-mt-24 mb-6 rounded-2xl border border-[#d8c2b1] bg-[#f1e6d8] p-3 sm:p-5">
-            <h2 className="mb-4 text-xl font-black text-[#2f1a18] sm:text-2xl">
-              CLASSICS.
-            </h2>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {menuItems
-                .filter((item: MenuItemType) => item.category === "CLASSICS.")
-                .map((item: MenuItemType) => (
-                  <MenuItem key={item.name} item={item} />
-                ))}
-            </div>
-          </section>
-
-          <section id="matcha" className="scroll-mt-24 mb-6 rounded-2xl border border-[#d8c2b1] bg-[#f1e6d8] p-3 sm:p-5">
-            <h2 className="mb-4 text-xl font-black text-[#2f1a18] sm:text-2xl">
-              MATCHA.
-            </h2>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {menuItems
-                .filter((item: MenuItemType) => item.category === "MATCHA.")
-                .map((item: MenuItemType) => (
-                  <MenuItem key={item.name} item={item} />
-                ))}
-            </div>
-          </section>
-
-          <section id="pourover" className="scroll-mt-24 rounded-2xl border border-[#d8c2b1] bg-[#f1e6d8] p-3 sm:p-5">
-            <h2 className="mb-4 text-xl font-black text-[#2f1a18] sm:text-2xl">
-              POUROVER.
-            </h2>
-
-            <div className="grid gap-3 sm:grid-cols-2">
-              {menuItems
-                .filter((item: MenuItemType) => item.category === "POUROVER.")
-                .map((item: MenuItemType) => (
-                  <MenuItem key={item.name} item={item} />
-                ))}
-            </div>
-          </section>
-        </div>
+    <>
+      <CategoryNav categories={menu.categories.map(({ id, name }) => ({ id, name }))} />
+      <div id="menu-list" className="menu-grid">
+        {menu.categories.map((category) => {
+          const isSpecialty = category.items.some((item) => item.roaster !== null || item.process !== null);
+          const isAddon = category.items.length > 0 && category.items.every((item) => item.itemType === "addon");
+          return (
+            <section key={category.id} id={category.id}
+              className={`menu-section${isSpecialty ? " menu-section-specialty" : ""}${isAddon ? " menu-section-addons" : ""}`}
+              aria-labelledby={`${category.id}-title`} tabIndex={-1}>
+              <div className="menu-section-heading">
+                <h2 id={`${category.id}-title`}>{category.name}</h2>
+                {isSpecialty ? <p>Origins, processes & the people who roast them.</p> : null}
+              </div>
+              {category.items.length > 0 ? (
+                <ul className="menu-items">
+                  {category.items.map((item) => <MenuItem key={item.id} item={item} />)}
+                </ul>
+              ) : <p className="menu-section-empty">Ask our barista what’s available.</p>}
+            </section>
+          );
+        })}
       </div>
+    </>
+  );
+}
 
-      <footer className="mt-8 border-t border-[#d9b99d] bg-[#f1e2d2] text-[#2f1a18]">
-        <div className="mx-auto grid max-w-md gap-6 px-3 py-8 sm:max-w-2xl sm:px-4 md:grid-cols-[1.2fr_0.9fr] md:gap-8">
-          <div className="space-y-3">
-            <p className="text-lg font-black tracking-wide">Ñuwave Specialty Coffee</p>
-            <p className="text-sm leading-relaxed text-[#5b2f2b]">
-              Don't just drink coffee, experience it.
-            </p>
-
-            <div className="flex flex-wrap gap-2 pt-1 text-sm">
-              <a
-                href="https://www.instagram.com/nuwavecoffeeph/"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-[#7a3d35] px-3 py-1.5 text-[#3b201d] transition-colors hover:border-[#3b201d] hover:bg-white/40"
-              >
-                Instagram
-              </a>
-              <a
-                href="https://www.facebook.com/p/%C3%91uwave-Coffee-61556594862390/"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-[#7a3d35] px-3 py-1.5 text-[#3b201d] transition-colors hover:border-[#3b201d] hover:bg-white/40"
-              >
-                Facebook
-              </a>
-            </div>
+export default function Home(): ReactElement {
+  return (
+    <main id="top" className="menu-page">
+      <a className="menu-skip" href="#menu-list">Skip to the menu</a>
+      <div className="menu-paper">
+        <header className="menu-masthead">
+          <a className="menu-brand" href="#top" aria-label="Ñuwave Specialty Coffee, top of menu">
+            <span className="menu-brand-mark">
+              <Image src={brandLogo} alt="Ñuwave Specialty Coffee" sizes="(max-width: 600px) 207px, (max-width: 800px) 288px, 391px" loading="eager" />
+            </span>
+          </a>
+          <div className="menu-title-block">
+            <h1>THE MENU</h1>
+            <p>Don’t just drink coffee, experience it.</p>
           </div>
-
-          <div className="space-y-2 overflow-hidden text-sm text-[#5b2f2b]">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#5b2f2b]">
-              Contact
-            </p>
-            <p className="break-words">📍 Corner Fajardo & Libertad Street, Iloilo City</p>
-            <p className="break-words">📞 +63 907 831 3114</p>
-            <p className="break-all">✉️ newwavespecialitycoffee@gmail.com</p>
-            <p className="break-words">☕ Open daily • 11:00 AM – 1:00 AM</p>
+          <div className="menu-mascot" aria-hidden="true">
+            <Image src={coffeeMascot} alt="" sizes="(max-width: 600px) 88px, (max-width: 800px) 90px, 125px" loading="eager" />
           </div>
-        </div>
-      </footer>
-
+          <div className="menu-masthead-foot">
+            <p>Corner Fajardo & Libertad Street, Iloilo City</p>
+            <p>All prices in Philippine pesos</p>
+          </div>
+        </header>
+        <Suspense fallback={<div className="menu-state" role="status" aria-live="polite">
+          <h2>Getting the menu ready.</h2><p>Loading drinks, coffee & something to eat…</p>
+        </div>}><MenuContents /></Suspense>
+        <footer className="menu-footer">
+          <div>
+            <a className="menu-footer-brand" href="#top">Ñuwave Specialty Coffee</a>
+            <p>Corner Fajardo & Libertad Street, Iloilo City</p>
+          </div>
+          <div className="menu-footer-links">
+            <a href="https://www.instagram.com/nuwavecoffeeph/" target="_blank" rel="noreferrer">Instagram <span className="menu-sr-only">(opens a new tab)</span></a>
+            <a href="https://www.facebook.com/p/%C3%91uwave-Coffee-61556594862390/" target="_blank" rel="noreferrer">Facebook <span className="menu-sr-only">(opens a new tab)</span></a>
+            <a href="#top">Back to top</a>
+          </div>
+        </footer>
+      </div>
     </main>
   );
 }

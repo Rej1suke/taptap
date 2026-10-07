@@ -1,10 +1,52 @@
 // use prisma-8
 
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id
   email     String   @unique
   name      String?
+  fullName  String   @default("")
   isAdmin   Boolean  @default(false)
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
+}
+
+model MenuCategory {
+  id String @id
+  name String
+  sortOrder Int @default(0)
+  active Boolean @default(true)
+  items MenuItem[]
+}
+
+model MenuItem {
+  id String @id
+  categoryId String
+  category MenuCategory @relation(fields: [categoryId], references: [id])
+  itemType String
+  name String
+  description String?
+  process String?
+  roaster String?
+  pictureUrl String?
+  sortOrder Int @default(0)
+  active Boolean @default(true)
+  variants MenuVariant[]
+  @@index([categoryId])
+}
+
+model MenuVariant {
+  id String @id
+  itemId String
+  item MenuItem @relation(fields: [itemId], references: [id])
+  name String
+  temperature String?
+  sizeOz Int?
+  priceCentavos Int
+  currency String @default("PHP")
+  priceKind String
+  sortOrder Int @default(0)
+  available Boolean?
+  sourceImage String?
+  sourcePriceText String?
+  @@index([itemId])
 }

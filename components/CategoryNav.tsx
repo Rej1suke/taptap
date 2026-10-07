@@ -1,73 +1,69 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type ReactElement } from "react";
 
-const categories = [
-  { label: "All", href: "#top", id: "top" },
-  { label: "black-based", href: "#black", id: "black" },
-  { label: "milk-based.", href: "#milk-based", id: "milk-based" },
-  { label: "tea-based.", href: "#tea-based", id: "tea-based" },
-  { label: "classics.", href: "#classics", id: "classics" },
-  { label: "matcha.", href: "#matcha", id: "matcha" },
-  { label: "pourover.", href: "#pourover", id: "pourover" },
-];
+type CategoryLink = { id: string; name: string };
 
-export default function CategoryNav() {
-  const [activeCategory, setActiveCategory] = useState("top");
+export default function CategoryNav({ categories }: { categories: CategoryLink[] }): ReactElement {
+  const [activeCategory, setActiveCategory] = useState(categories[0]?.id ?? "");
+  const navRef = useRef<HTMLElement>(null);
+  const preferredCategory = useRef<string | null>(null);
 
   useEffect(() => {
-    const sections = categories
-      .map(({ id }) => document.getElementById(id))
+    const sections = categories.map(({ id }) => document.getElementById(id))
       .filter((section): section is HTMLElement => section !== null);
-
-    if (sections.length === 0) return;
-
-    const updateActiveCategory = () => {
-      const triggerY = window.innerHeight * 0.4;
-      const activeSection = [...sections].reverse().find((section) => {
-        const rect = section.getBoundingClientRect();
-        return rect.top <= triggerY;
+    preferredCategory.current = window.location.hash.slice(1) || preferredCategory.current;
+    let frame = 0;
+    const update = (): void => {
+      frame = 0;
+      const offset = (navRef.current?.getBoundingClientRect().height ?? 64) + 28;
+      if (window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+        setActiveCategory(sections.at(-1)?.id ?? "");
+        return;
+      }
+      const positions = sections.map((section) => ({ id: section.id, top: section.getBoundingClientRect().top }));
+      const visible = positions.filter(({ top }) => top <= offset);
+      const nearestTop = Math.max(...visible.map(({ top }) => top));
+      const nearestRow = visible.filter(({ top }) => Math.abs(top - nearestTop) < 2);
+      setActiveCategory((current) => {
+        const preferred = nearestRow.find(({ id }) => id === preferredCategory.current);
+        const retained = nearestRow.find(({ id }) => id === current);
+        return preferred?.id ?? retained?.id ?? nearestRow[0]?.id ?? sections[0]?.id ?? "";
       });
-
-      setActiveCategory(activeSection?.id ?? sections[0].id);
     };
-
-    updateActiveCategory();
-    window.addEventListener("scroll", updateActiveCategory, { passive: true });
-    window.addEventListener("resize", updateActiveCategory);
-
+    const onScroll = (): void => { if (!frame) frame = window.requestAnimationFrame(update); };
+    const initialFrame = window.requestAnimationFrame(update);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      window.removeEventListener("scroll", updateActiveCategory);
-      window.removeEventListener("resize", updateActiveCategory);
+      window.cancelAnimationFrame(initialFrame);
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [categories]);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const link = nav?.querySelector<HTMLElement>("[aria-current='location']");
+    if (!nav || !link) return;
+    const bounds = nav.getBoundingClientRect();
+    const current = link.getBoundingClientRect();
+    if (current.left < bounds.left || current.right > bounds.right) {
+      nav.scrollLeft += current.left - bounds.left - (bounds.width - current.width) / 2;
+    }
+  }, [activeCategory]);
 
   return (
-    <nav aria-label="Menu categories" className="sticky top-0 z-20 border-b border-[#d8b79d] bg-[#f5efe6]/95 backdrop-blur-sm">
-      <div className="mx-auto max-w-md px-3 py-3 sm:max-w-xl sm:px-4">
-        <div className="overflow-x-auto pb-1">
-          <div className="flex min-w-max gap-2">
-            {categories.map(({ label, href, id }) => {
-              const isActive = activeCategory === id;
-
-              return (
-                <a
-                  key={label}
-                  href={href}
-                  onClick={() => setActiveCategory(id)}
-                  className={
-                    isActive
-                      ? "whitespace-nowrap rounded-full bg-[#3a1f1d] px-3 py-2 text-xs font-semibold text-[#f5efe6] shadow-sm transition-all duration-300 ease-out will-change-transform hover:scale-[1.02] sm:px-4 sm:text-sm"
-                      : "whitespace-nowrap rounded-full bg-[#f3e3d6] px-3 py-2 text-xs font-semibold text-[#3a1f1d] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#ebd8c5] hover:shadow-sm sm:px-4 sm:text-sm"
-                  }
-                >
-                  {label}
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+    <nav ref={navRef} aria-label="Menu categories" className="menu-nav">
+      <ul>{categories.map(({ id, name }) => <li key={id}>
+        <a href={`#${id}`} aria-current={activeCategory === id ? "location" : undefined}
+          onClick={(event) => {
+            preferredCategory.current = id;
+            setActiveCategory(id);
+            if (event.detail === 0) document.getElementById(id)?.focus({ preventScroll: true });
+          }}>{name}</a>
+      </li>)}</ul>
     </nav>
   );
 }

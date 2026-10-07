@@ -7,23 +7,38 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "contract:emit": "prisma contract emit"
+    "contract:emit": "prisma contract emit",
+    "db:migrate": "prisma db migrate && tsx scripts/secure-db.mts",
+    "db:secure": "tsx scripts/secure-db.mts",
+    "db:seed": "tsx scripts/seed-menu.mts",
+    "test": "tsx --test scripts/menu.test.ts",
+    "test:api": "tsx scripts/verify-api.mts",
+    "test:auth": "tsx scripts/verify-auth.mts"
   },
   "dependencies": {
+    "@prisma/cli-engine": "0.6.3",
+    "@prisma/orm-postgres": "8.0.0-rc.16",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.3",
-    "next": "16.3.3",
+    "dotenv": "^17.4.2",
+    "next": "16.3.6",
+    "pg": "8.22.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "temporal-polyfill": "^1.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.3",
+    "eslint-config-next": "16.3.6",
+    "prisma": "8.0.0-rc.21",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

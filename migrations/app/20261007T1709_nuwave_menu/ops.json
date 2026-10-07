@@ -1,0 +1,379 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.MenuCategory",
+    "label": "Create table \"MenuCategory\"",
+    "summary": "Creates table \"MenuCategory\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "MenuCategory"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"MenuCategory\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuCategory\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"MenuCategory\"",
+        "sql": "CREATE TABLE \"public\".\"MenuCategory\" (\n  \"active\" bool DEFAULT true NOT NULL,\n  \"id\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"sortOrder\" int4 DEFAULT 0 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"MenuCategory\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuCategory\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.MenuItem",
+    "label": "Create table \"MenuItem\"",
+    "summary": "Creates table \"MenuItem\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "MenuItem"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"MenuItem\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuItem\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"MenuItem\"",
+        "sql": "CREATE TABLE \"public\".\"MenuItem\" (\n  \"active\" bool DEFAULT true NOT NULL,\n  \"categoryId\" text NOT NULL,\n  \"description\" text,\n  \"id\" text NOT NULL,\n  \"itemType\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"pictureUrl\" text,\n  \"process\" text,\n  \"roaster\" text,\n  \"sortOrder\" int4 DEFAULT 0 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"MenuItem\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuItem\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.MenuVariant",
+    "label": "Create table \"MenuVariant\"",
+    "summary": "Creates table \"MenuVariant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "MenuVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"MenuVariant\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuVariant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"MenuVariant\"",
+        "sql": "CREATE TABLE \"public\".\"MenuVariant\" (\n  \"available\" bool,\n  \"currency\" text DEFAULT 'PHP' NOT NULL,\n  \"id\" text NOT NULL,\n  \"itemId\" text NOT NULL,\n  \"name\" text NOT NULL,\n  \"priceCentavos\" int4 NOT NULL,\n  \"priceKind\" text NOT NULL,\n  \"sizeOz\" int4,\n  \"sortOrder\" int4 DEFAULT 0 NOT NULL,\n  \"sourceImage\" text,\n  \"sourcePriceText\" text,\n  \"temperature\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"MenuVariant\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuVariant\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.User",
+    "label": "Create table \"User\"",
+    "summary": "Creates table \"User\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"User\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"User\"",
+        "sql": "CREATE TABLE \"public\".\"User\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"fullName\" text DEFAULT '' NOT NULL,\n  \"id\" text NOT NULL,\n  \"isAdmin\" bool DEFAULT false NOT NULL,\n  \"name\" text,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"User\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.User.User_email_key",
+    "label": "Add unique constraint on \"User\" (email)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "User_email_key",
+        "table": "User"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"User_email_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_email_key",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"User_email_key\"",
+        "sql": "ALTER TABLE \"public\".\"User\" ADD CONSTRAINT \"User_email_key\" UNIQUE (\"email\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"User_email_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "User_email_key",
+          "public",
+          "\"public\".\"User\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.MenuItem.MenuItem_categoryId_idx_15c304f2",
+    "label": "Create index \"MenuItem_categoryId_idx_15c304f2\" on \"MenuItem\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "MenuItem_categoryId_idx_15c304f2",
+        "table": "MenuItem"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"MenuItem_categoryId_idx_15c304f2\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuItem_categoryId_idx_15c304f2\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"MenuItem_categoryId_idx_15c304f2\"",
+        "sql": "CREATE INDEX \"MenuItem_categoryId_idx_15c304f2\" ON \"public\".\"MenuItem\" (\"categoryId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"MenuItem_categoryId_idx_15c304f2\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuItem_categoryId_idx_15c304f2\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.MenuVariant.MenuVariant_itemId_idx_41357140",
+    "label": "Create index \"MenuVariant_itemId_idx_41357140\" on \"MenuVariant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "MenuVariant_itemId_idx_41357140",
+        "table": "MenuVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"MenuVariant_itemId_idx_41357140\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuVariant_itemId_idx_41357140\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"MenuVariant_itemId_idx_41357140\"",
+        "sql": "CREATE INDEX \"MenuVariant_itemId_idx_41357140\" ON \"public\".\"MenuVariant\" (\"itemId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"MenuVariant_itemId_idx_41357140\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"MenuVariant_itemId_idx_41357140\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.MenuItem.MenuItem_categoryId_fkey",
+    "label": "Add foreign key \"MenuItem_categoryId_fkey\" on \"MenuItem\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "MenuItem_categoryId_fkey",
+        "table": "MenuItem"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"MenuItem_categoryId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "MenuItem_categoryId_fkey",
+          "public",
+          "\"public\".\"MenuItem\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"MenuItem_categoryId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"MenuItem\"\nADD CONSTRAINT \"MenuItem_categoryId_fkey\"\nFOREIGN KEY (\"categoryId\")\nREFERENCES \"public\".\"MenuCategory\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"MenuItem_categoryId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "MenuItem_categoryId_fkey",
+          "public",
+          "\"public\".\"MenuItem\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.MenuVariant.MenuVariant_itemId_fkey",
+    "label": "Add foreign key \"MenuVariant_itemId_fkey\" on \"MenuVariant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "MenuVariant_itemId_fkey",
+        "table": "MenuVariant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"MenuVariant_itemId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "MenuVariant_itemId_fkey",
+          "public",
+          "\"public\".\"MenuVariant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"MenuVariant_itemId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"MenuVariant\"\nADD CONSTRAINT \"MenuVariant_itemId_fkey\"\nFOREIGN KEY (\"itemId\")\nREFERENCES \"public\".\"MenuItem\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"MenuVariant_itemId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "MenuVariant_itemId_fkey",
+          "public",
+          "\"public\".\"MenuVariant\""
+        ]
+      }
+    ]
+  }
+]
