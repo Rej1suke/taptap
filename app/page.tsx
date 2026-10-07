@@ -11,7 +11,7 @@ export default function Home() {
 
           <div className="mx-auto flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white shadow-sm transition-transform duration-300 hover:scale-105 sm:h-20 sm:w-20">
             <img
-              src="/nuwave.jpg"
+              src="/nuwave.png"
               alt="Ñuwave Coffee logo"
               className="h-full w-full object-cover transition-transform duration-300 hover:scale-110"
             />

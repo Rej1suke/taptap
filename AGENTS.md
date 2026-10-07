@@ -6,4 +6,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
+# This is NOT the Prisma you know
+
+This version is the new Prisma 8, with breaking changes, please read `prisma-8.md` for a quick introduction.
+
 <!-- END:nextjs-agent-rules -->

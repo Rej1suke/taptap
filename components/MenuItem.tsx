@@ -12,7 +12,7 @@ export default function MenuItem({ item }: MenuItemProps) {
     <div className="rounded-xl border border-[#c8a98d] bg-[#f9f4ee] p-3 text-[#2f1a18] shadow-[0_8px_22px_rgba(58,31,29,0.08)] sm:p-4">
       <div className="flex items-start gap-3">
         <img
-          src="/nuwave.jpg"
+          src="/nuwave.png"
           alt={`${item.name} menu item`}
           className="h-16 w-16 shrink-0 rounded-xl border border-[#d9b99d] bg-white object-cover"
         />
