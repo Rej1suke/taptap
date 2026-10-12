@@ -1,97 +1,81 @@
-import { Suspense, type ReactElement } from "react";
 import Image from "next/image";
-import CategoryNav from "@/components/CategoryNav";
-import MenuItem from "@/components/MenuItem";
-import { getPublicMenu } from "@/lib/menu/repository";
-import type { MenuResponse } from "@/lib/menu/types";
+import type { ReactElement } from "react";
 import brandLogo from "@/public/nuwave.png";
 
-export const dynamic = "force-dynamic";
-
-async function MenuContents(): Promise<ReactElement> {
-  let menu: MenuResponse;
-  try {
-    menu = await getPublicMenu();
-  } catch {
-    return (
-      <section className="menu-state" aria-labelledby="menu-error-title">
-        <h2 id="menu-error-title">The menu couldn’t load.</h2>
-        <p>Please try again, or ask our barista for today’s menu.</p>
-        <form action="/" method="get"><button className="menu-action" type="submit">Try again</button></form>
-      </section>
-    );
-  }
-  if (menu.categories.length === 0) {
-    return (
-      <section className="menu-state" aria-labelledby="menu-empty-title">
-        <h2 id="menu-empty-title">We’re updating the menu.</h2>
-        <p>Ask our barista what’s available today.</p>
-      </section>
-    );
-  }
-  return (
-    <>
-      <CategoryNav categories={menu.categories.map(({ id, name }) => ({ id, name }))} />
-      <div id="menu-list" className="menu-grid">
-        {menu.categories.map((category) => {
-          const isSpecialty = category.items.some((item) => item.roaster !== null || item.process !== null);
-          const isAddon = category.items.length > 0 && category.items.every((item) => item.itemType === "addon");
-          return (
-            <section key={category.id} id={category.id}
-              className={`menu-section${isSpecialty ? " menu-section-specialty" : ""}${isAddon ? " menu-section-addons" : ""}`}
-              aria-labelledby={`${category.id}-title`} tabIndex={-1}>
-              <div className="menu-section-heading">
-                <h2 id={`${category.id}-title`}>{category.name}</h2>
-                {isSpecialty ? <p>Origins, processes & the people who roast them.</p> : null}
-              </div>
-              {category.items.length > 0 ? (
-                <ul className="menu-items">
-                  {category.items.map((item) => <MenuItem key={item.id} item={item} />)}
-                </ul>
-              ) : <p className="menu-section-empty">Ask our barista what’s available.</p>}
-            </section>
-          );
-        })}
-      </div>
-    </>
-  );
-}
+const houseRules = [
+  {
+    number: "01",
+    title: "Dining time limit",
+    description: "2 hours per drink.",
+  },
+  {
+    number: "02",
+    title: "Minimum order",
+    description: "1 drink per person. No outside food.",
+  },
+  {
+    number: "03",
+    title: "Seats and tables",
+    description: "For paying customers only.",
+  },
+  {
+    number: "04",
+    title: "Keep voices low",
+    description: "Please be mindful of your noise level.",
+  },
+  {
+    number: "05",
+    title: "Please don't move the chairs",
+    description: "",
+  },
+  {
+    number: "06",
+    title: "Charging fee",
+    description: "₱20 per hour.",
+  },
+  {
+    number: "07",
+    title: "CLAYGO.",
+    description: "",
+  },
+];
 
 export default function Home(): ReactElement {
   return (
-    <main id="top" className="menu-page">
-      <a className="menu-skip" href="#menu-list">Skip to the menu</a>
-      <div className="menu-paper">
-        <header className="menu-masthead">
-          <a className="menu-brand" href="#top" aria-label="Ñuwave Specialty Coffee, top of menu">
-            <span className="menu-brand-mark">
-              <Image src={brandLogo} alt="Ñuwave Specialty Coffee" sizes="(max-width: 600px) 207px, (max-width: 800px) 288px, 391px" loading="eager" />
-            </span>
-          </a>
-          <div className="menu-title-block">
-            <h1>THE MENU</h1>
-            <p>Don’t just drink coffee, experience it.</p>
+    <main className="landing-page welcome-page">
+      <article className="welcome-card">
+        <header className="welcome-header">
+          <p className="welcome-kicker">Specialty coffee · Iloilo City</p>
+          <div className="welcome-logo">
+            <Image src={brandLogo} alt="ÑUWAVE Specialty Coffee" sizes="(max-width: 520px) 180px, 220px" priority />
           </div>
-          <div className="menu-masthead-foot">
-            <p>Corner Fajardo & Libertad Street, Iloilo City</p>
-            <p>All prices in Philippine pesos</p>
-          </div>
+          <p className="welcome-tagline">Don’t just drink coffee, experience it.</p>
         </header>
-        <Suspense fallback={<div className="menu-state" role="status" aria-live="polite">
-          <h2>Getting the menu ready.</h2><p>Loading drinks, coffee & something to eat…</p>
-        </div>}><MenuContents /></Suspense>
-        <footer className="menu-footer">
-          <div>
-            <a className="menu-footer-brand" href="#top">Ñuwave Specialty Coffee</a>
-            <p>Corner Fajardo & Libertad Street, Iloilo City</p>
-          </div>
-          <div className="menu-footer-links">
-            <a href="https://www.instagram.com/nuwavecoffeeph/" target="_blank" rel="noreferrer">Instagram <span className="menu-sr-only">(opens a new tab)</span></a>
-            <a href="https://www.facebook.com/p/%C3%91uwave-Coffee-61556594862390/" target="_blank" rel="noreferrer">Facebook <span className="menu-sr-only">(opens a new tab)</span></a>
-            <a href="#top">Back to top</a>
-          </div>
-        </footer>
-      </div>
+        <div className="welcome-body">
+          <section aria-labelledby="welcome-title">
+            <div className="welcome-intro">
+              <h2 id="welcome-title">Welcome to ÑUWAVE</h2>
+              <p>A few little things to make everyone’s visit lovely.</p>
+            </div>
+            <h3 className="welcome-rules-title">HOUSE RULES</h3>
+            <ul className="welcome-rules">
+              {houseRules.map((rule) => (
+                <li key={rule.title}>
+                  <span className="welcome-rule-number">{rule.number}</span>
+                  <div>
+                    <h4>{rule.title}</h4>
+                    {rule.description ? <p>{rule.description}</p> : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+          <a className="welcome-menu-link" href="/menu">
+            Explore our menu
+          </a>
+          <p className="welcome-signoff">ÑUWAVE Specialty Coffee · Crafted for your everyday moments.</p>
+        </div>
+      </article>
     </main>
   );
 }

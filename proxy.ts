@@ -1,7 +1,11 @@
-import { type NextRequest, type NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from './lib/supabase/proxy'
 
 export async function proxy(request: NextRequest): Promise<NextResponse> {
+    if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/menu') {
+        return NextResponse.next()
+    }
+
     return await updateSession(request)
 }
 

@@ -21,8 +21,8 @@ const menuDisplay = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "Menu | Ñuwave Specialty Coffee",
-  description: "Explore the Ñuwave Specialty Coffee menu: coffee, matcha, tea, specialty origins and munchies in Iloilo City. Prices in Philippine pesos.",
+  title: "ÑUWAVE Specialty Coffee | Iloilo City",
+  description: "Welcome to ÑUWAVE Specialty Coffee in Iloilo City. Discover our house rules, find us on Fajardo & Libertad Street, and explore the menu.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }): ReactElement {
