@@ -8,11 +8,11 @@ web
 
 ## Users
 
-Visitors browsing Nuwave Specialty Coffee's menu. Approved administrators maintain menu content; a teammate owns the complete administrative interface.
+Customers at the café who tap the NFC tag on their table and order from their own phone. Cashiers and approved administrators work on the staff side; a teammate owns the complete administrative interface.
 
 ## Product Purpose
 
-Present the café's current menu clearly on one responsive public page. Visitors should be able to find categories, compare drink variants, and read prices and specialty coffee details without signing in.
+Let customers browse the menu, choose options and add-ons, and place an order from their table, then follow its status live, without signing in. The agreed scope (deck "Ñuwave Ordering System — Scope Inclusions", October 2026) covers NFC table ordering, online payments through PayMongo, a cashier dashboard, and Loyverse POS as the source of menu, prices and sales.
 
 ## Operating Context
 
@@ -20,8 +20,11 @@ The confirmed source menu is `E:/Downloads/menu.csv`, containing 8 categories, 3
 
 ## Capabilities and Constraints
 
-- Public digital menu only: no cart, ordering, checkout, payment, or customer account flows.
-- Keep all menu categories visible on a single page, with category anchors for navigation.
+- Customer web ordering is in scope: menu by category with search, hot/iced and add-ons, cart, dine-in or takeout, table number from the NFC link (`?table=N`, 1–99), order placement, a live status page, and "My Orders" stored on the device.
+- No customer accounts. A customer sees an order only through its private request token, which lives on the ordering device and in the status-page URL.
+- Pay at the counter works now. Online payment (GCash, Maya, QR Ph, cards via PayMongo) is shown as coming soon and rejected by the API until the PayMongo integration lands.
+- Not yet built: the cashier dashboard and status controls, PayMongo checkout and webhooks, and Loyverse menu sync and sales posting. Until Loyverse sync exists, the database menu seeded from the CSV stays the source.
+- No push or SMS notifications; the status page updates live while open, and the cashier presses a standalone table beeper.
 - Preserve confirmed identifiers, prices, category ordering, food/beverage/addon distinctions, specialty process/roaster details, and surcharges.
 - Administrative signup remains pending approval and discards any signup session. Approved sign-in enters a protected dashboard placeholder. Each protected request verifies identity and the current database admin flag.
 - The full admin UI belongs to a teammate; provide documented menu APIs. No admin-user management.

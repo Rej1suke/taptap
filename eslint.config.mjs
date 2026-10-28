@@ -14,6 +14,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "prisma/contract.d.ts",
     "migrations/snapshots/**/contract.d.ts",
+    // Third-party agent skills and their working files are not project code.
+    ".claude/**",
+    ".taste-skill/**",
   ]),
 ]);
 

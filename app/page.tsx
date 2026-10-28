@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactElement } from "react";
+import { menuHref, parseTableNumber } from "@/lib/orders/types";
 import brandLogo from "@/public/nuwave.png";
 
 const houseRules = [
@@ -40,7 +41,13 @@ const houseRules = [
   },
 ];
 
-export default function Home(): ReactElement {
+// An NFC tag may open the welcome page first (`/?table=4`); keep the table on the way to the menu.
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<ReactElement> {
+  const tableNumber = parseTableNumber((await searchParams).table);
   return (
     <main className="landing-page welcome-page">
       <article className="welcome-card">
@@ -70,7 +77,7 @@ export default function Home(): ReactElement {
               ))}
             </ul>
           </section>
-          <a className="welcome-menu-link" href="/menu">
+          <a className="welcome-menu-link" href={menuHref(tableNumber)}>
             Explore our menu
           </a>
           <p className="welcome-signoff">ÑUWAVE Specialty Coffee · Crafted for your everyday moments.</p>

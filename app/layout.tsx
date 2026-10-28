@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactElement, ReactNode } from "react";
 import { Barlow_Condensed, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -23,6 +23,12 @@ const menuDisplay = Barlow_Condensed({
 export const metadata: Metadata = {
   title: "ÑUWAVE Specialty Coffee | Iloilo City",
   description: "Welcome to ÑUWAVE Specialty Coffee in Iloilo City. Discover our house rules, find us on Fajardo & Libertad Street, and explore the menu.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }): ReactElement {
