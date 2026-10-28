@@ -130,4 +130,15 @@ Press feedback scales to 0.97 over 160ms. Active underline changes over 150ms. T
 
 - Don't use the brand logo as a product photograph.
 - Don't delay menu text behind entrance animation.
-- Don't introduce cart, ordering, or public administrative navigation into the menu.
+- Don't introduce public administrative navigation into the menu. Ordering screens (cart, checkout, order status) reuse the plum-on-paper tokens rather than introducing a new palette.
+
+## Ordering screens (menu, cart, item options, order status)
+
+Restyled October 2026 with the design-taste-frontend skill, app-screen run, style "achromatic-ledger" (seed 535872358) with the brand palette and type kept. The tokens live at the top of the ordering block in `app/globals.css`.
+
+- Roles: paper `#f5efe6` is the ground, `#fbf8f3` the surface for inputs and cards, cream `#f1e2d2` the raised or selected tone, plum `#2f042f` the ink and the one filled primary action per screen. `#452045` is kept only as the Specialty Coffee field.
+- Lines are whispers (`#e4d9d5` borders, `#ebe2dc` row rules); controls one step stronger (`#cbbcc8`).
+- Type: Geist for everything; Barlow Condensed only for screen titles, section headings and the order number. Sizes 12 / 14 / 16 / 24, the title at 28 (24 on a phone), one figure at 40.
+- Radii are tight: 8 for panels and the cart bar, 6 for controls and chips.
+- The menu is one list of rows (name, details, each variant's price in ink, an Add affordance). Category chips filter it and carry their item counts. No placeholder photographs: a thumbnail appears only when an item has a real `pictureUrl`.
+- No gradients, glows, blur, emoji, small tracked uppercase labels, or labels above headings. Shadows only on what floats (the cart bar, the drawer, the options sheet).

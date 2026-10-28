@@ -1,8 +1,14 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from './lib/supabase/proxy'
 
+// Customer-facing routes never need a staff session refresh.
+function isPublicCustomerPath(pathname: string): boolean {
+    return pathname === '/' || pathname === '/menu' || pathname.startsWith('/order/') ||
+        pathname === '/api/orders' || pathname.startsWith('/api/orders/')
+}
+
 export async function proxy(request: NextRequest): Promise<NextResponse> {
-    if (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/menu') {
+    if (isPublicCustomerPath(request.nextUrl.pathname)) {
         return NextResponse.next()
     }
 

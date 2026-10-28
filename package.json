@@ -11,7 +11,7 @@
     "db:migrate": "prisma db migrate && tsx scripts/secure-db.mts",
     "db:secure": "tsx scripts/secure-db.mts",
     "db:seed": "tsx scripts/seed-menu.mts",
-    "test": "tsx --test scripts/menu.test.ts",
+    "test": "tsx --test scripts/menu.test.ts scripts/orders.test.ts",
     "test:api": "tsx scripts/verify-api.mts",
     "test:auth": "tsx scripts/verify-auth.mts"
   },

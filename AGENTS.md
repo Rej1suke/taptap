@@ -3,7 +3,7 @@
 ## Product scope and ownership
 
 - Build a distinctive, responsive, one-page public digital menu for Nuwave Specialty Coffee. Keep warm paper/cream backgrounds with the user's approved varied plum palette centered on `#2f042f`, matching the real logo and their recolored transparent mascot. The user replaced the initial brown/burgundy direction; do not revert it.
-- The public site is a menu only. Do not add carts, ordering, checkout, payments, or customer account flows.
+- The public site is a customer ordering site (see `PRODUCT.md` for the agreed scope): cart, add-ons attached to their drink, dine-in/takeout, NFC table number, pay at the counter, a live order status page, and on-device "My Orders". Do not add customer accounts. Online payment, the cashier dashboard, and Loyverse sync are agreed scope but not yet built; the orders API rejects online payment until PayMongo is integrated.
 - Keep the administrative backend separate from the public menu and out of public navigation. Hidden URLs are not an authorization mechanism.
 - A teammate owns the full administrative UI. The implemented handoff is a protected `/dashboard` placeholder plus documented menu APIs in `docs/specs/admin-side.md`. Do not expand into an admin-user management UI or API.
 - `docs/plans/nuwave-menu.md` records the approved staged plan and verification evidence. `PRODUCT.md` records durable product scope; `DESIGN.md` and `.impeccable/design.json` describe the implemented visual system.

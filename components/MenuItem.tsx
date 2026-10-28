@@ -1,39 +1,57 @@
+"use client";
+
 import Image from "next/image";
 import type { ReactElement } from "react";
 import type { MenuItem as MenuItemData, MenuVariant } from "@/lib/menu/types";
+import { formatPrice } from "@/lib/orders/types";
 
-const priceFormatter = new Intl.NumberFormat("en-PH", {
-  style: "currency", currency: "PHP", minimumFractionDigits: 0, maximumFractionDigits: 2,
-});
-
-function variantLabel(variant: MenuVariant, hasMultiple: boolean): string | null {
-  const temperature = variant.temperature === "iced" ? "Iced" : variant.temperature === "hot" ? "Hot" : null;
-  const name = variant.name.toLowerCase() === "standard" ? null : variant.name;
-  const size = variant.sizeOz === null ? null : `${variant.sizeOz} oz`;
-  return [temperature ?? name, size].filter(Boolean).join(" · ") || (hasMultiple ? "Standard" : null);
+function priceLabel(variant: MenuVariant, hasMultiple: boolean): string | null {
+  if (!hasMultiple) return null;
+  if (variant.temperature === "iced") return "Iced";
+  if (variant.temperature === "hot") return "Hot";
+  return variant.name.toLowerCase() === "standard" ? null : variant.name;
 }
 
-export default function MenuItem({ item }: { item: MenuItemData }): ReactElement {
+export default function MenuItem({
+  item,
+  onCustomize,
+}: {
+  item: MenuItemData;
+  onCustomize: (item: MenuItemData) => void;
+}): ReactElement {
+  const hasMultiple = item.variants.length > 1;
+  const lowest = Math.min(...item.variants.map((variant) => variant.priceCentavos));
+
   return (
     <li className="menu-item">
-      <div className="menu-item-main">
-        {item.pictureUrl ? <Image src={item.pictureUrl} alt="" width={64} height={64} className="menu-item-image" unoptimized /> : null}
-        <div className="menu-item-copy">
-          <h3>{item.name}</h3>
-          {item.description ? <p className="menu-description">{item.description}</p> : null}
-          {item.process ? <p className="menu-process">{item.process}</p> : null}
-          {item.roaster ? <p className="menu-roaster">Roasted by <span>{item.roaster}</span></p> : null}
-        </div>
-        <dl className="menu-prices">
+      <button
+        type="button"
+        className="menu-item-button"
+        onClick={() => onCustomize(item)}
+        aria-label={`${item.name}, from ${formatPrice(lowest)}. Choose options`}
+      >
+        {item.pictureUrl ? (
+          <Image className="menu-item-image" src={item.pictureUrl} alt="" width={64} height={64} unoptimized />
+        ) : null}
+        <span className="menu-item-copy">
+          <span className="menu-item-name">{item.name}</span>
+          {item.description ? <span className="menu-item-detail">{item.description}</span> : null}
+          {item.process ? <span className="menu-item-detail">{item.process}</span> : null}
+          {item.roaster ? <span className="menu-item-detail">Roasted by {item.roaster}</span> : null}
+        </span>
+        <span className="menu-item-prices">
           {item.variants.map((variant) => {
-            const label = variantLabel(variant, item.variants.length > 1);
-            return <div className="menu-price" key={variant.id}>
-              <dt className={label ? "menu-price-label" : "menu-sr-only"}>{label ?? "Price"}</dt>
-              <dd>{variant.priceKind === "surcharge" ? "+" : ""}{priceFormatter.format(variant.priceCentavos / 100)}</dd>
-            </div>;
+            const label = priceLabel(variant, hasMultiple);
+            return (
+              <span className="menu-item-price" key={variant.id}>
+                {label ? <span>{label}</span> : null}
+                {formatPrice(variant.priceCentavos)}
+              </span>
+            );
           })}
-        </dl>
-      </div>
+        </span>
+        <span className="menu-item-add" aria-hidden="true">Add</span>
+      </button>
     </li>
   );
 }
