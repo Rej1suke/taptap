@@ -2,6 +2,7 @@
 
 import { useState, type ReactElement } from "react";
 import Image from "next/image";
+import { addonAllowed } from "@/lib/menu/addons";
 import type { MenuItem, MenuVariant } from "@/lib/menu/types";
 
 const priceFormatter = new Intl.NumberFormat("en-PH", {
@@ -46,7 +47,7 @@ export default function MenuCustomizer({
   const showSizes = sizes.length > 1;
   const showVariantChoices = item.variants.length > 1 && !showTemperatures && !showSizes;
   const addonOptions = item.itemType === "beverage"
-    ? addons.flatMap((addon) => addon.variants.map((variant) => ({ item: addon, variant })))
+    ? addons.filter((addon) => addonAllowed(addon.id, item.id)).flatMap((addon) => addon.variants.map((variant) => ({ item: addon, variant })))
     : [];
   const selectedAddons = addonOptions.filter(({ variant }) => selectedAddonIds.includes(variant.id));
   const unitTotal = (selectedVariant?.priceCentavos ?? 0) + selectedAddons.reduce((sum, addon) => sum + addon.variant.priceCentavos, 0);
