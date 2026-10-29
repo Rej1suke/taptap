@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseCreateOrder } from '../lib/orders/validation';
 import { isPublicOrder, parseTableNumber } from '../lib/orders/types';
+import { addonAllowed } from '../lib/menu/addons';
 
 const requestId = '00000000-0000-4000-8000-000000000000';
 
@@ -24,7 +25,7 @@ test('order input keeps add-ons with their drink and the table and order type', 
     tableNumber: 4,
     paymentMethod: 'counter',
     items: [
-      { variantId: 'var-latte-iced', quantity: 1, addonVariantIds: ['var-upsize-standard', 'var-oatmilk-standard'] },
+      { variantId: 'var-sweet-kanella-iced', quantity: 1, addonVariantIds: ['var-upsize-standard', 'var-oatmilk-standard'] },
       { variantId: 'var-latte-iced', quantity: 1 },
     ],
   }), {
@@ -32,7 +33,7 @@ test('order input keeps add-ons with their drink and the table and order type', 
     orderType: 'takeout',
     tableNumber: 4,
     items: [
-      { variantId: 'var-latte-iced', quantity: 1, addonVariantIds: ['var-oatmilk-standard', 'var-upsize-standard'] },
+      { variantId: 'var-sweet-kanella-iced', quantity: 1, addonVariantIds: ['var-oatmilk-standard', 'var-upsize-standard'] },
       { variantId: 'var-latte-iced', quantity: 1, addonVariantIds: [] },
     ],
   });
@@ -86,4 +87,14 @@ test('public order guard accepts the API shape and rejects unknown statuses', ()
   };
   assert.equal(isPublicOrder(order), true);
   assert.equal(isPublicOrder({ ...order, status: 'lost' }), false);
+});
+
+test('oat milk is offered only on drinks not already made with it', () => {
+  for (const drink of ['item-sweet-kanella', 'item-matcha-latte', 'item-caramel-matcha']) {
+    assert.equal(addonAllowed('item-oatmilk', drink), true);
+  }
+  for (const drink of ['item-latte', 'item-spanish-oat', 'item-strawberry-matcha']) {
+    assert.equal(addonAllowed('item-oatmilk', drink), false);
+  }
+  assert.equal(addonAllowed('item-upsize', 'item-latte'), true);
 });

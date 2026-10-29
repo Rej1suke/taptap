@@ -2,6 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { Pool, type PoolClient } from "pg";
 import { ApiError } from "@/lib/api";
+import { addonAllowed } from "@/lib/menu/addons";
 import {
   ORDER_STATUSES, ORDER_TYPES, PAYMENT_METHODS, isOneOf,
   type PublicOrder, type PublicOrderLine,
@@ -182,6 +183,9 @@ export async function placeOrder(input: CreateOrderInput): Promise<PublicOrder> 
         if (!addon) throw new ApiError(409, "ITEM_UNAVAILABLE", UNAVAILABLE);
         if (addon.itemType !== "addon" || main.itemType !== "beverage") {
           throw new ApiError(400, "VALIDATION_ERROR", "Only add-ons can be added, and only to drinks.");
+        }
+        if (!addonAllowed(addon.itemId, main.itemId)) {
+          throw new ApiError(400, "VALIDATION_ERROR", `${addon.itemName} isn't available for ${main.itemName}.`);
         }
         inserts.push({ id: randomUUID(), parentItemId: mainId, variant: addon, quantity: requested.quantity, lineTotalCentavos: checkedTotal(addon.priceCentavos * requested.quantity) });
       }
